@@ -2,6 +2,7 @@ package obj;
 
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Client {
 
@@ -11,6 +12,7 @@ public class Client {
     private String redditHandle;
     private String paypalHandle;
     private String email;
+    private final UUID uuid;
 
     private HashMap<String, String> userFields = new HashMap<>();
 
@@ -22,6 +24,7 @@ public class Client {
         this.phone = requestInfo("Phone Number");
         this.paypalHandle = requestInfo("Paypal Handle");
         this.email = requestInfo("Email");
+        this.uuid = UUID.randomUUID();
     }
 
     @Override
@@ -40,5 +43,9 @@ public class Client {
         }
         System.out.printf("Field %s set to %s",inputType, fieldInput);
         return fieldInput;
+    }
+
+    public UUID getUuid() {
+        return uuid;
     }
 }

@@ -1,21 +1,28 @@
 package obj;
 
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
+import java.util.UUID;
 
-public class Loan {
+public class Loan extends AbstractLoanAppObject {
 
-
-
-    public enum Status {
+    public enum LoanStatus {
         COMPLETED,
         ACTIVE,
         LATE,
         DEFAULTING
     }
-    private final Client borrower;
-    private Status status;
-    private final Double principal;
+    public enum InterestType {
+        FIXED_SUM,
+        RATE
+    }
+    private Client borrower;
+    private  UUID borrowerId;
+    private LoanStatus status;
+    private  Double principal;
+    private  InterestType interestType;
     private Double interestRate;
     private Date borrowDate;
     private int termDays;
@@ -27,10 +34,20 @@ public class Loan {
         this.borrower = borrower;
         this.principal = principal;
         this.balance = principal;
+        this.borrowerId = borrower.getUuid();
+        this.termDays = Integer.valueOf(requestInfo("Length of loan term"));
+    }
+
+    @Override
+    String requestInfo(String reqData) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(reqData+": ");
+        String response = scanner.nextLine();
+        return response.isEmpty() ? "-" : response;
     }
 
     public Client getBorrower() {return borrower;}
-    public Status getStatus() {return status;}
+    public LoanStatus getStatus() {return status;}
     public Double getPrincipal() {
         return principal;
     }
@@ -45,6 +62,10 @@ public class Loan {
     }
     public Double getBalance() {
         return balance;
+    }
+
+    public static void writeToFile(Path path) {
+
     }
 
     public static void printLoans(List<Loan> loans){
